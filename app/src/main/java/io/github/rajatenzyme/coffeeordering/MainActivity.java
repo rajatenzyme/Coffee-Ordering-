@@ -1,24 +1,26 @@
 package io.github.rajatenzyme.coffeeordering;
 
-//import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
-import java.text.NumberFormat;
-import android.widget.*;
-import android.content.*;
-
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.regex.*;
-import java.util.*;
+import com.hbb20.CountryCodePicker;
+
+import java.util.UUID;
 
 /**
  * This app displays an order form to order coffee.
  */
 public class MainActivity extends AppCompatActivity
 {
+    CountryCodePicker ccp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,12 +33,13 @@ public class MainActivity extends AppCompatActivity
      * This method is called when the order button is clicked.
      */
     int quantity= 1;
+    //String selected_country_code;
 
     public void submitOrder(View view)
     {
 
         String ord_id= UUID.randomUUID().toString().replace("-","");
-
+        ccp = (CountryCodePicker) findViewById(R.id.ccp);
         EditText text= (EditText) findViewById(R.id.name_field);
         String name= text.getText().toString();
         if (name.matches(""))
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity
 
         CheckBox Chocolate = (CheckBox) findViewById(R.id.has_chocolate);
         boolean hasChocolate = Chocolate.isChecked();
-        String priceMessage ="Order Id: " + ord_id+ "\nName: " + name + "\nMobile No. " + mob + "\nAdd Whipped Cream: " + whipVal(hasWhippedCream)  + "\nAdd Chocolate: " + chocVal(hasChocolate) + "\nQuantity: " + quantity + "\nTotal: " + "₹" + calculatePrice(hasWhippedCream, hasChocolate) + " \nThank You for your order!";
+        String priceMessage ="Order Id: " + ord_id+ "\nName: " + name + "\nMobile No. "  + mob + "\nAdd Whipped Cream: " + whipVal(hasWhippedCream)  + "\nAdd Chocolate: " + chocVal(hasChocolate) + "\nQuantity: " + quantity + "\nTotal: " + "₹" + calculatePrice(hasWhippedCream, hasChocolate) + " \nThank You for your order!";
 
 
 
@@ -73,16 +76,6 @@ public class MainActivity extends AppCompatActivity
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
-
-
-//		Intent intent =  new Intent(Intent.ACTION_SENDTO);
-//		intent.setData(Uri.parse("mailto:"));
-//		intent.putExtra(Intent.EXTRA_SUBJECT, "Order summary of " + name + " from Coffee Ordering App");
-//		intent.putExtra(Intent.EXTRA_TEXT, priceMessage);
-//		if (intent.resolveActivity(getPackageManager()) != null)
-//		{
-//			startActivity(intent);
-//		}
 
         displayMessage(priceMessage);
 
